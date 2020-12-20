@@ -7,8 +7,9 @@ struct Node{
     struct Node *next;
 };
 
+struct Node *head = NULL;
 
-struct Node * insertAtHead(int value, struct Node *head){
+struct Node * insertAtHead(int value){
 
     struct Node *temp;
 
@@ -27,11 +28,12 @@ struct Node * insertAtHead(int value, struct Node *head){
 }
 
 //Printing all the nodes in linked list 
-void printAllNodes(struct Node *head){
+void printAllNodes(){
   //start from head and print all the values 
 
   if(head == NULL){
     printf("List is empty");
+    return;
   }
 
   struct Node  * temp = head;
@@ -41,11 +43,11 @@ void printAllNodes(struct Node *head){
     temp = temp->next;
   }
 
-   printf("%d->NULL",temp->value);
+   printf("%d->NULL\n",temp->value);
 }
 
 
-void insertAfterValue(struct Node * head, int afterValue, int value){
+void insertAfterValue(int afterValue, int value){
 
   struct Node *temp, *currentNode;
 
@@ -71,6 +73,7 @@ void insertAfterValue(struct Node * head, int afterValue, int value){
 
   //point the new node to the next of currentNode 
   temp -> next = currentNode -> next;
+  temp -> value = value;
 
   //point the next of currentNode to new node 
 
@@ -80,21 +83,93 @@ void insertAfterValue(struct Node * head, int afterValue, int value){
 
 }
 
+//delete head
+void deleteHead(){
+  if (head == NULL){
+    printf("List is empty\n");
+    return;    
+  }
+
+  // // only head is present in the list
+  // if (head->next == NULL){
+  //   free(head);
+  //   head = NULL;
+  //   return;
+  // }
+
+  //there are more than 1 node in the list
+  struct Node *temp = head;
+  head = head -> next;
+  free(temp);
+}
+
+
+//delete node which has value
+void deleteNodeWithValue( int value){
+
+  //check if list is empty 
+  if (head == NULL){
+    printf("List is empty");
+    return ;
+  }
+
+  //check if we need to remove the head 
+  if (head -> value == value){
+    deleteHead();
+    return;
+  }
+
+  //now it's not head and not empty 
+  //traverse the list to find the node which has value
+  struct Node *currentNode, *prevNode;
+  currentNode = head->next;
+  prevNode = head;
+  
+  while (currentNode != NULL && currentNode->value != value){
+    currentNode = currentNode->next;
+    prevNode = prevNode->next;    
+  }
+
+  //check if we reached end of list 
+
+  //now we have CR at the correct place and pr at one node before 
+  prevNode->next = currentNode->next;
+  free(currentNode);
+
+}
+
 
 
 int main(void) {
 
-  struct Node* head = NULL;
-  head = insertAtHead(4, head);  
-  head = insertAtHead(3, head);
-  head = insertAtHead(2, head);
-  head = insertAtHead(1, head);
+  insertAtHead(4 );  
+  insertAtHead(3);
+  insertAtHead(2);
+  insertAtHead(1);
 
-  printAllNodes(head);
+  printAllNodes();
 
-  insertAfterValue(head, 3, 5);
+  insertAfterValue( 3, 5);
 
-  printAllNodes(head);
+  printAllNodes();
+
+  deleteNodeWithValue(5);
+
+  printAllNodes();
+
+  deleteNodeWithValue(1);
+
+  printAllNodes();
+
+  deleteHead();
+  deleteHead();
+
+  printAllNodes();
+  deleteHead();
+  printAllNodes();
+
+
+  
 
   
   return 0;
