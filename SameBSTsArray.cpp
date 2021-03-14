@@ -6,7 +6,7 @@ int main()
     return 0;
 }
 
-
+//Time : O (n^2) | Space O(n^2)
 vector<int> getSmaller(vector<int> array){
     vector<int> smaller = {};
     for (int i = 1 ; i < array.size() ; i++) {
